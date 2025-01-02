@@ -34,10 +34,10 @@ class TicketResource extends Resource
                     ->required()
                     ->columnSpanFull(),
                 Forms\Components\Select::make('priority')
-                    ->options(Ticket::PRIORITY)
+                    ->options(self::$model::PRIORITY)
                     ->required(),
                 Forms\Components\Select::make('status')
-                ->options(Ticket::STATUS)
+                ->options(self::$model::STATUS)
                 ->required(),
 
                 // Forms\Components\Select::make('assigned_by')

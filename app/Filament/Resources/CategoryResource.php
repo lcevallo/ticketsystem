@@ -28,7 +28,6 @@ class CategoryResource extends Resource
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('slug')
-
                     ->readOnly()
                     ,
                 Forms\Components\Toggle::make('is_active')
