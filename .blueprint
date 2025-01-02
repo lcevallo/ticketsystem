@@ -1,0 +1,17 @@
+created:
+    - database/factories/CategoryFactory.php
+    - database/factories/TicketFactory.php
+    - database/factories/CategoryTicketFactory.php
+    - database/migrations/2025_01_02_220828_create_categories_table.php
+    - database/migrations/2025_01_02_220829_create_tickets_table.php
+    - database/migrations/2025_01_02_220830_create_category_tickets_table.php
+    - app/Models/Category.php
+    - app/Models/Ticket.php
+    - app/Models/CategoryTicket.php
+    - database/seeders/CategorySeeder.php
+    - database/seeders/TicketSeeder.php
+models:
+    User: {  }
+    Category: { name: string, slug: string, is_active: boolean }
+    Ticket: { title: string, description: longtext, priority: 'enum:low,medium,high', status: 'enum:open,closed,solved', comment: 'longtext nullable', assigned_by: 'id foreign:users.id', assigned_to: 'id foreign:users.id' }
+    CategoryTicket: { category_id: 'id foreign:categories.id', ticket_id: 'id foreign:tickets.id' }

@@ -1,0 +1,20 @@
+models:
+  Category:
+    name: string
+    slug: string
+    is_active: boolean
+
+  Ticket:
+    title: string
+    description: longtext
+    priority: enum:low,medium,high
+    status: enum:open,closed,solved
+    comment: longtext nullable
+    assigned_by: id foreign:users.id
+    assigned_to: id foreign:users.id
+
+  CategoryTicket:
+    category_id: id foreign:categories.id
+    ticket_id: id foreign:tickets.id
+
+seeders: Category, Ticket
