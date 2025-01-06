@@ -42,3 +42,7 @@ php artisan make:migration "create role_user create"
 `php artisan migrate`
 
 php artisan make:policy  CategoryPolicy --model=Category
+php artisan make:policy TicketPolicy --model=Ticket
+php artisan make:policy RolePolicy --model=Role
+php artisan make:policy PermissionPolicy --model=Permission
+php artisan make:policy UserPolicy --model=User
