@@ -18,4 +18,9 @@ class CreateCategory extends CreateRecord
         return $data;
     }
 
+    protected function getCreatedNotificationTitle(): ?string
+    {
+        return 'Category Created';
+    }
+
 }
