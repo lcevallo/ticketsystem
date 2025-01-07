@@ -34,4 +34,9 @@ class Category extends Model
     {
         return $this->belongsToMany(Ticket::class);
     }
+
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', true);
+    }
 }

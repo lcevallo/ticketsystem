@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use Filament\Forms;
+use App\Models\User;
 use Filament\Tables;
 use App\Models\Ticket;
 use Filament\Forms\Form;
@@ -14,6 +15,7 @@ use App\Filament\Resources\TicketResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\TicketResource\RelationManagers;
 use App\Filament\Resources\TicketResource\RelationManagers\CategoriesRelationManager;
+use Filament\Tables\Filters\SelectFilter;
 
 class TicketResource extends Resource
 {
@@ -44,8 +46,16 @@ class TicketResource extends Resource
                 //     ->relationship('assignedBy', 'name')
                 //     ->required()
                 //     ,
+                // Forms\Components\Select::make('assigned_to')
+                //     ->relationship('assignedTo', 'name')
+                //     ->required(),
+
                 Forms\Components\Select::make('assigned_to')
-                    ->relationship('assignedTo', 'name')
+                    ->options(
+                        User::whereHas('roles',function(Builder $query){
+                            $query->where('title','Agent');
+                        })->pluck('name','id')->toArray()
+                    )
                     ->required(),
 
                 Forms\Components\RichEditor::make('comment')
@@ -57,6 +67,7 @@ class TicketResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->defaultSort('created_at', 'desc')
             ->columns([
                 Tables\Columns\TextColumn::make('title')
                     ->sortable()
@@ -77,7 +88,8 @@ class TicketResource extends Resource
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    // ->toggleable(isToggledHiddenByDefault: true)
+                    ,
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
@@ -88,7 +100,15 @@ class TicketResource extends Resource
                     ->searchable(),
             ])
             ->filters([
-                //
+                SelectFilter::make('priority')
+                    ->options(self::$model::PRIORITY)
+                    ->label('Priority')
+                    ->placeholder('Filter by Priority')
+                    ,
+                SelectFilter::make('status')
+                    ->options(self::$model::STATUS)
+                    ->label('Status')
+                    ->placeholder('Filter by Status'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
