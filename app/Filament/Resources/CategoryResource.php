@@ -2,18 +2,18 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
-use Filament\Tables;
+use App\Filament\Resources\CategoryResource\Pages;
+use App\Filament\Resources\CategoryResource\RelationManagers;
 use App\Models\Category;
+use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Actions\Action;
+use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
-use Filament\Resources\Resource;
-use Filament\Tables\Actions\DeleteAction;
-use Illuminate\Database\Eloquent\Builder;
-use App\Filament\Resources\CategoryResource\Pages;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\CategoryResource\RelationManagers;
+
 
 class CategoryResource extends Resource
 {
@@ -69,6 +69,8 @@ class CategoryResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make()->successNotificationTitle('Category Updated'),
                 DeleteAction::make(),
+                Action::make('google')
+                ->url("https://www.google.com")
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

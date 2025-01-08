@@ -35,7 +35,8 @@ class UserResource extends Resource
 
                 Forms\Components\TextInput::make('password')
                     ->password()
-                    ->required()
+                    ->dehydrated(fn ($state) => filled($state))
+                    ->required(fn (string $context): bool => $context === 'create')
                     ->maxLength(255),
                 // Forms\Components\TextInput::make('current_team_id')
                 //     ->numeric(),

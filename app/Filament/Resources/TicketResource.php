@@ -68,6 +68,9 @@ class TicketResource extends Resource
     {
         return $table
             ->defaultSort('created_at', 'desc')
+            ->modifyQueryUsing(fn (Builder $query) =>
+                    auth()->user()->hasRole('Agent') ? $query->where('assigned_to',auth()->id()) : $query
+            )
             ->columns([
                 Tables\Columns\TextColumn::make('title')
                     ->sortable()
@@ -75,29 +78,48 @@ class TicketResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('priority')
                    ->badge(fn (Ticket $ticket) => $ticket->priority)
+                    ->color(fn (string $state): string => match ($state) {
+                        'low' => 'gray',
+                        'medium' => 'warning',
+                        'high' => 'danger',
+                    })
                     ->searchable(),
-                Tables\Columns\TextColumn::make('status')
-                    ->badge()
-                    ->searchable(),
+
+                Tables\Columns\SelectColumn::make('status')
+                    ->options(self::$model::STATUS)
+                    ->searchable()
+                   ,
+
+
+//                Tables\Columns\TextColumn::make('status')
+//                    ->badge()
+//                    ->color(fn (string $state): string => match ($state) {
+//                        'open' => 'success',
+//                        'closed' => 'danger',
+//                        'solved' => 'gray'
+//                    })
+//                    ->searchable(),
+
                 Tables\Columns\TextColumn::make('assignedBy.name')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('assignedTo.name')
                     ->numeric()
                     ->sortable(),
+                Tables\Columns\TextInputColumn::make('comment')
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
                     // ->toggleable(isToggledHiddenByDefault: true)
                     ,
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+//                Tables\Columns\TextColumn::make('updated_at')
+//                    ->dateTime()
+//                    ->sortable()
+//                    ->toggleable(isToggledHiddenByDefault: true),
 
-                Tables\Columns\TextInputColumn::make('comment')
-                    ->sortable()
-                    ->searchable(),
+
             ])
             ->filters([
                 SelectFilter::make('priority')

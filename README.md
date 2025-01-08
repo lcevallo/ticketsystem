@@ -16,11 +16,11 @@ To set up the schoolMIS application, follow these steps:
 2. Configure environment variables: Run `cd schoolmis && cp .env.example .env` ,
 3. Install composer: `composer install`
 4. Install npm: `npm install`
-4. Generate application key: `php artisan key:generate`
-5. Run migrations: `php artisan migrate` (This command sets up the database tables based on defined migrations) or `php artisan migrate:rollback`
-6. (Optional) Seed the database: `php artisan db:seed` (This command populates the database with sample data, if available)
-7. Run Application `php artisan serve`,
-8. Link Storage `php artisan storage:link`
+5. Generate application key: `php artisan key:generate`
+6. Run migrations: `php artisan migrate` (This command sets up the database tables based on defined migrations) or `php artisan migrate:rollback`
+7. (Optional) Seed the database: `php artisan db:seed` (This command populates the database with sample data, if available)
+8. Run Application `php artisan serve`,
+9. Link Storage `php artisan storage:link`
 
 php artisan make:filament-relation-manager TicketResource categories name
 php artisan make:filament-relation-manager RoleResource permissions title
@@ -34,15 +34,20 @@ php artisan make:seeder UserRoleTableSeeder
 
 php artisan migrate:fresh --seed
 
-
 php artisan make:filament-relation-manager UserResource roles title
 
 php artisan make:migration "create role_user create"
 
 `php artisan migrate`
 
-php artisan make:policy  CategoryPolicy --model=Category
+php artisan make:policy CategoryPolicy --model=Category
 php artisan make:policy TicketPolicy --model=Ticket
 php artisan make:policy RolePolicy --model=Role
 php artisan make:policy PermissionPolicy --model=Permission
 php artisan make:policy UserPolicy --model=User
+
+php artisan make:filament-widget StatsOverview --stats-overview
+php artisan make:filament-widget LatestTickets --table
+
+php artisan make:filament-widget TicketOverviewChart --chart
+composer require flowframe/laravel-trend
